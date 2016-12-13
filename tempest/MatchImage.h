@@ -2,6 +2,7 @@
 #include "Matrix.h"
 #include "LargeImage.h"
 #include <iostream>
+#include <iomanip>
 
 using namespace std;
 
@@ -30,7 +31,7 @@ class MatchImage :public Matrix<T> {
 		//constructors
 		MatchImage(const char *fileName, int rows, int cols);
 		MatchImage();
-		T sumDiff(Matrix<T>&search_matrix, int sRow, int sCol);
+		void sumDiff(Matrix<T>&search_matrix/*, int sRow, int sCol*/);
 		//T WritePGM(char *filename, double *bestmatch, int row, int col, int Q);
 
 			//Deconstructors
@@ -96,43 +97,39 @@ MatchImage<T>:: ~MatchImage()
 }
 
 template <class T>
-T MatchImage<T>::sumDiff(Matrix<T>&sMat, int sRow, int sCol)
+void MatchImage<T>::sumDiff(Matrix<T>&sMat/*, int sRow, int sCol*/)
 {
-	Total = 0;
-	dif = 0;
-	sDiff = 0;
-	bMatch = 0;
-	int outerRow = 0;
-	int outerCol = 0;
-	int row = 0;
-	int col = 0;	
+	bMatch = 1000000000;
 
-
-	for (outerRow = 0; outerRow < sMat.getNumRows() - this->getNumRows(); outerRow++)
+	for (int outerRow = 0; outerRow < sMat.getNumRows() - this->getNumRows(); outerRow++)
 	{
-		for (outerCol = 0; outerCol < sMat.getNumCols() - this->getNumCols(); outerCol++)
+		cout << "*";
+		for (int outerCol = 0; outerCol < sMat.getNumCols() - this->getNumCols(); outerCol++)
 		{
-			for (row = 0; row < this->getNumRows(); row++)
+			Total = 0;
+			for (int row = 0; row < this->getNumRows(); row++)
 			{
-				for (col = 0; col < this->getNumCols(); col++)
+				for (int col = 0; col < this->getNumCols(); col++)
 				{
-					dif = this->getItem(row, col) - sMat.getItem(sRow + row, sCol + col); // calculation for difference
+					dif = this->getItem(row, col) - sMat.getItem(outerRow + row, outerCol + col); // calculation for difference
 					// this->getItem gets wally image minus searchMatrix which is the cluttered image.
-					sDiff += dif * dif; // gets the squared value by multiplying diff by diff.
+					sDiff = dif * dif; // gets the squared value by multiplying diff by diff.
 					Total = Total + sDiff;
-					
-					if (bMatch == 0)
-						bMatch = Total;
-					else if (bMatch > Total)
-					{
-						bMatch = Total;
-					}
-					
 				}
+			}
+			if (Total < bMatch)
+			{
+				bMatchRow = outerRow;
+				bMatchCol = outerCol;
+				bMatch = Total;
 			}
 		}	
 	}
-	return sqr;
+
+	cout << fixed << setprecision(0) << "Best Match: " << bMatch << endl;
+	cout << "Best Row: " << bMatchRow << endl;
+	cout << "Best Col: " << bMatchCol << endl;
+
 }
 
 //template<class T>

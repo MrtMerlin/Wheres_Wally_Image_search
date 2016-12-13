@@ -27,7 +27,7 @@ int main()
 	/*********************************TESTING AREA/*****************************/
 	/***************************************************************************/
 	
-	cout << wally.sumDiff(clutteredScene, 0, 0) << endl;
+	wally.sumDiff(clutteredScene);
 	/*cout << wally.average(0, 0, 49, 36) << endl;
 	cout << wally.sum(0, 0, 49, 36) - wally.average(0,0,49,36) << endl;*/
 	///*cout << clutteredScene.average(0, 0, 49, 36) << endl;
