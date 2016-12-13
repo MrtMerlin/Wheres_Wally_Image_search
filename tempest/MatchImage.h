@@ -32,9 +32,9 @@ class MatchImage :public Matrix<T> {
 		MatchImage(const char *fileName, int rows, int cols);
 		MatchImage();
 		void sumDiff(Matrix<T>&search_matrix/*, int sRow, int sCol*/);
-		//T WritePGM(char *filename, double *bestmatch, int row, int col, int Q);
+		void WritePGM(char *filename, double *bestmatch, int row, int col, int Q);
 
-			//Deconstructors
+		//Deconstructors
 		~MatchImage();
 
 	//void calculate_normalised_correlation(Matrix<T>&search_matrix, int sRow, int sCol);
@@ -125,63 +125,63 @@ void MatchImage<T>::sumDiff(Matrix<T>&sMat/*, int sRow, int sCol*/)
 			}
 		}	
 	}
-
+	cout << endl;
 	cout << fixed << setprecision(0) << "Best Match: " << bMatch << endl;
 	cout << "Best Row: " << bMatchRow << endl;
 	cout << "Best Col: " << bMatchCol << endl;
 
+	//Matrix<T>::fillMatrix(bMatchRow, bMatchCol, 49, 36);
+
 }
 
-//template<class T>
-//T MatchImage<T>::WritePGM(char *filename, double *bMatch, int row, int col, int Q)////////write file write file write file write file write file write file write file write file
-//{
-//
-//
-//	int i; //j;
-//	unsigned char *image;
-//	ofstream myfile;
-//
-//
-//	image = (unsigned char *) new unsigned char[sizeR*sizeC];
-//
-//
-//	// convert the integer values to unsigned char
-//
-//
-//	for (i = 0; i<sizeR*sizeC; i++)
-//		image[i] = (unsigned char)bestmatch[i];
-//
-//
-//	myfile.open("..\\..\\WheresWally.pgm", ios::out | ios::binary | ios::trunc);
-//
-//
-//	if (!myfile) {
-//		cout << "Can't open file: " << filename << endl;
-//		exit(1);
-//	}
-//
-//
-//	myfile << "P5" << endl;
-//	myfile << sizeC << " " << sizeR << endl;
-//	myfile << Q << endl;
-//
-//
-//	myfile.write(reinterpret_cast<char *>(image), (sizeR*sizeC) * sizeof(unsigned char));
-//
-//
-//	if (myfile.fail()) {
-//		cout << "Can't write image " << filename << endl;
-//		exit(0);
-//	}
-//
-//
-//	myfile.close();
-//
-//
-//	delete[] image;
-//
-//
-//}
+template<class T>
+void MatchImage<T>::WritePGM(char *filename, double *bMatch, int row, int col, int Q)////////write file write file write file write file write file write file write file write file
+{
+	int i; //j;
+	unsigned char *image;
+	ofstream myfile;
+
+
+	image = (unsigned char *) new unsigned char[bMatchRow * bMatchCol];
+
+
+	// convert the integer values to unsigned char
+
+
+	for (i = 0; i < bMatchRow * bMatchCol; i++)
+		image[i] = (unsigned char)bMatch[i];
+
+
+	myfile.open("C:\\WheresWally.pgm", ios::out | ios::binary | ios::trunc);
+
+
+	if (!myfile) {
+		cout << "Can't open file: " << filename << endl;
+		exit(1);
+	}
+
+
+	myfile << "P5" << endl;
+	myfile << bMatchCol << " " << bMatchRow << endl;
+	myfile << Q << endl;
+
+
+	myfile.write(reinterpret_cast<char *>(image), (bMatchRow*bMatchCol) * sizeof(unsigned char));
+
+
+	if (myfile.fail()) {
+		cout << "Can't write image " << filename << endl;
+		exit(0);
+	}
+
+
+	myfile.close();
+
+
+	delete[] image;
+
+
+}
 //template <class T>
 //T MatchImage<T>::calculate_normalised_correlation(Matrix<T>&search_matrix, int sRow, int sCol)
 //{	
