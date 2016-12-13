@@ -21,6 +21,7 @@ class MatchImage :public Matrix<T> {
 		T mean	  =	0;
 		T sqr	  =	0;
 		T tMatrix;
+		T bMatch;
 		T Total;
 		T dif;
 		T sDiff;
@@ -100,7 +101,7 @@ T MatchImage<T>::sumDiff(Matrix<T>&sMat, int sRow, int sCol)
 	Total = 0;
 	dif = 0;
 	sDiff = 0;
-	T bMatch;
+	bMatch = 0;
 	int outerRow = 0;
 	int outerCol = 0;
 	int row = 0;
@@ -119,15 +120,19 @@ T MatchImage<T>::sumDiff(Matrix<T>&sMat, int sRow, int sCol)
 					// this->getItem gets wally image minus searchMatrix which is the cluttered image.
 					sDiff += dif * dif; // gets the squared value by multiplying diff by diff.
 					Total = Total + sDiff;
-					if (Total > bMatch)
+					
+					if (bMatch == 0)
+						bMatch = Total;
+					else if (bMatch > Total)
 					{
 						bMatch = Total;
 					}
+					
 				}
 			}
 		}	
 	}
-	return bMatch;
+	return sqr;
 }
 
 //template<class T>
