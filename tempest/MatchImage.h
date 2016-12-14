@@ -101,6 +101,13 @@ void MatchImage<T>::sumDiff(Matrix<T>&sMat/*, int sRow, int sCol*/)
 {
 	bMatch = 1000000000;
 
+	cout << "********************************************************************************" << endl;
+	cout << "********************************************************************************" << endl;
+	cout << "***************************The Sum of Square Differences************************" << endl;
+	cout << "************************************Wheres Wally********************************" << endl;
+	cout << "********************************************************************************" << endl;
+	cout << "********************************************************************************" << endl;
+
 	for (int outerRow = 0; outerRow < sMat.getNumRows() - this->getNumRows(); outerRow++)
 	{
 		cout << "*";
@@ -131,6 +138,7 @@ void MatchImage<T>::sumDiff(Matrix<T>&sMat/*, int sRow, int sCol*/)
 	cout << "Best Col: " << bMatchCol << endl;
 
 	//Matrix<T>::fillMatrix(bMatchRow, bMatchCol, 49, 36);
+	//Matrix<T>::printSubMatrix(bMatchRow, bMatchCol, 49, 36);
 
 }
 
