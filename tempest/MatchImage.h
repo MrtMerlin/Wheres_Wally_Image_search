@@ -37,7 +37,7 @@ class MatchImage :public Matrix<T> {
 		//Deconstructors
 		~MatchImage();
 
-	//void calculate_normalised_correlation(Matrix<T>&search_matrix, int sRow, int sCol);
+		void calculate_normalised_correlation(Matrix<T>&search_matrix); //, int sRow, int sCol);
 		
 };
 
@@ -97,6 +97,11 @@ MatchImage<T>:: ~MatchImage()
 }
 
 template <class T>
+MatchImage<T>::calculate_normalised_correlation(Matrix<T>&sMat)
+{
+
+}
+template <class T>
 void MatchImage<T>::sumDiff(Matrix<T>&sMat/*, int sRow, int sCol*/)
 {
 	bMatch = 1000000000;
@@ -110,7 +115,7 @@ void MatchImage<T>::sumDiff(Matrix<T>&sMat/*, int sRow, int sCol*/)
 
 	for (int outerRow = 0; outerRow < sMat.getNumRows() - this->getNumRows(); outerRow++)
 	{
-		cout << "*";
+		cout << ";)";
 		for (int outerCol = 0; outerCol < sMat.getNumCols() - this->getNumCols(); outerCol++)
 		{
 			Total = 0;
@@ -137,9 +142,7 @@ void MatchImage<T>::sumDiff(Matrix<T>&sMat/*, int sRow, int sCol*/)
 	cout << "Best Row: " << bMatchRow << endl;
 	cout << "Best Col: " << bMatchCol << endl;
 
-	//Matrix<T>::fillMatrix(bMatchRow, bMatchCol, 49, 36);
-	//Matrix<T>::printSubMatrix(bMatchRow, bMatchCol, 49, 36);
-
+	
 }
 
 template<class T>
