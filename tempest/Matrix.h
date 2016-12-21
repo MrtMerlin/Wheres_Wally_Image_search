@@ -23,14 +23,16 @@ public: // public
 	Matrix();
 	Matrix(int row, int col);
 	Matrix(const char *fileName, int row, int col);
+	
 
 	~Matrix();
 
-	Matrix(const Matrix<T>&sourceMatrix);
+	Matrix(const Matrix<T>&sMat);
+	
 
 	//overloading 
-	Matrix<T>&operator=(const Matrix<T>&sourceMatrix);
-	Matrix<T>operator-(const Matrix<T>&sourceMatrix);
+	Matrix<T>&operator=(const Matrix<T>&sMat);
+	Matrix<T>operator-(const Matrix<T>&sMat);
 	T average(int row, int col, int height, int width);
 	T sum(int row, int col, int height, int width);
 	T square (int row, int col, int height, int width);
@@ -87,10 +89,10 @@ Matrix<T>::Matrix(int rows, int cols)
 *	Copy constructor
 */
 template <class T>
-Matrix<T>::Matrix(const Matrix<T>& sourceMatrix)
+Matrix<T>::Matrix(const Matrix<T>& sMat)
 {
-	numRows = sourceMatrix.numRows;
-	numCols = sourceMatrix.numCols;
+	numRows = sMat.numRows;
+	numCols = sMat.numCols;
 
 	this->ptrMatrix = new (nothrow) T[this->numRows * this->numCols];
 
@@ -100,7 +102,7 @@ Matrix<T>::Matrix(const Matrix<T>& sourceMatrix)
 	{
 		// Copy source data to destination
 		for (int i = 0; i < this->numRows * this->numCols; i++)
-			this->ptrMatrix[i] = sourceMatrix.ptrMatrix[i];
+			this->ptrMatrix[i] = sMat.ptrMatrix[i];
 	}
 	cout << "Copy constructor finished" << endl;
 }
@@ -109,14 +111,14 @@ Matrix<T>::Matrix(const Matrix<T>& sourceMatrix)
 *	= assignment operator to deep copy the matrix data
 */
 template <class T>
-Matrix<T>&Matrix<T>::operator=(const Matrix<T>&sourceMatrix)
+Matrix<T>&Matrix<T>::operator=(const Matrix<T>&sMat)
 {
 	// If we are assigning to ourself i.e. m1 = m1
-	if (this == &sourceMatrix)
+	if (this == &sMat)
 		return *this;  // Return a pointer to ourselves (why copy yourself to yourself)
 
-	numRows = sourceMatrix.numRows;
-	numCols = sourceMatrix.numCols;
+	numRows = sMat.numRows;
+	numCols = sMat.numCols;
 
 	// Clear any already allocated memory
 	if (this->ptrMatrix != nullptr) delete[] ptrMatrix;
@@ -130,7 +132,7 @@ Matrix<T>&Matrix<T>::operator=(const Matrix<T>&sourceMatrix)
 	{
 		// Copy source data to destination
 		for (int i = 0; i < this->numRows * this->numCols; i++)
-			this->ptrMatrix[i] = sourceMatrix.ptrMatrix[i];
+			this->ptrMatrix[i] = sMat.ptrMatrix[i];
 	}
 	cout << "Assignment = finished" << endl;
 	// Return a pointer to the copied matrix object
@@ -141,10 +143,10 @@ Matrix<T>&Matrix<T>::operator=(const Matrix<T>&sourceMatrix)
 *	 - subtraction operator
 */
 template <class T>
-Matrix<T> Matrix<T>::operator-(const Matrix<T>&sourceMatrix)
+Matrix<T> Matrix<T>::operator-(const Matrix<T>&sMat)
 {
 
-	if (this->numRows != sourceMatrix.numRows || this->numCols != sourceMatrix.numCols)
+	if (this->numRows != sMat.numRows || this->numCols != sMat.numCols)
 		throw(std::runtime_error("Subtraction error matrix dimensions do not match!!"));
 
 	// Allocate the right amount of memory for the new matrix of subtracted data
@@ -154,7 +156,7 @@ Matrix<T> Matrix<T>::operator-(const Matrix<T>&sourceMatrix)
 	for (int row = 0; row < this->numRows; ++row)   // Print the table
 	{
 		for (int col = 0; col < this->numCols; ++col)
-			newMatrix.ptrMatrix[row * this->numCols + col] = ptrMatrix[row * this->numCols + col] - sourceMatrix.ptrMatrix[row * this->numCols + col];
+			newMatrix.ptrMatrix[row * this->numCols + col] = ptrMatrix[row * this->numCols + col] - sMat.ptrMatrix[row * this->numCols + col];
 	}
 
 
@@ -166,7 +168,7 @@ Matrix<T> Matrix<T>::operator-(const Matrix<T>&sourceMatrix)
 *	Returns matrix sum
 */
 template <class T>
-T Matrix<T>::sum(int sRows, int sCols, int width, int height)
+T Matrix<T>::sum(int sRows, int sCols, int height, int width)
 {
 	T mSum = 0;
 
@@ -205,7 +207,7 @@ T Matrix<T>::sum(int sRows, int sCols, int width, int height)
 *	Returns the matrix average
 */
 template <class T>
-T Matrix<T>::average(int sRow, int sCol, int width, int height)
+T Matrix<T>::average(int sRow, int sCol, int height, int width)
 {
 	//check if mSum == 0, if greater mSum == 0 do following
 	if (mSum == 0) this->mSum = this->sum(sRow, sCol, width, height);
@@ -218,7 +220,7 @@ T Matrix<T>::average(int sRow, int sCol, int width, int height)
 *	Square method squares each matrix element by its self returning a new matrix with the result.
 */
 template <class T>
-T Matrix<T>::square(int sRow, int sCol, int width, int height) {
+T Matrix<T>::square(int sRow, int sCol, int height, int width) {
 	T sqr = 0;
 	// if statement this-> indicates variable ptrMatrix is part of this class. if ptrMatrix not = to nullptr step into if statement.
 	

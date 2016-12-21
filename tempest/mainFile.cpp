@@ -12,6 +12,7 @@ is to another file for inspection.
 
 #include <iostream>
 #include <Windows.h>
+#include <fstream>
 #include "Matrix.h"
 #include "MatchImage.h"
 #include "LargeImage.h"
@@ -24,9 +25,10 @@ int main()
 	SetConsoleTextAttribute(text, FOREGROUND_GREEN);
 	MatchImage<double>wally("..\\..\\tempest\\Wally_grey.txt", 49, 36);
 	LargeImage<double>clutteredScene("..\\..\\tempest\\Cluttered_scene.txt", 768, 1024);
+	
 	int userInput = 0;
 
-	cout << "***************************************************************************" << endl;
+		cout << "***************************************************************************" << endl;
 	cout << "***************************** WHERES WALLY ********************************" << endl;
 	cout << "************************** Author: Martin Lewis ***************************" << endl;
 	cout << "************************ Student Number: 014096 ***************************" << endl;
@@ -36,11 +38,14 @@ int main()
 	{
 		cout << "What you like to do, please select one of the following options" << endl;
 		cout << "1.\tFind Wally using Sum of Squared Differences (ssd)" << endl;
-		cout << "2.\tFind Wally using Normalised correlation (NC)" << endl;
-		cout << "3.\tFind Wally using both SSD and NC" << endl;
+		cout << "2.\tFind Wally using Nearest Neighbour Search (NNS)" << endl;
+		cout << "3.\tFind Wally using both SSD and NNS" << endl;
 		cout << "4.\tExit Program" << endl;
 
 		cin >> userInput;
+
+		SetConsoleTextAttribute(text, FOREGROUND_RED);
+
 
 		if (userInput == 1)
 		{
@@ -49,7 +54,7 @@ int main()
 
 		if (userInput == 2)
 		{
-			// do nothing for now.
+			wally.calculate_normalised_correlation(clutteredScene);
 		}
 		
 		if (userInput == 3)
@@ -66,10 +71,7 @@ int main()
 
 	/***************************************************************************/
 	/*********************************TESTING AREA/*****************************/
-	/***************************************************************************/
-
-	SetConsoleTextAttribute(text, FOREGROUND_RED);
-	
+	/***************************************************************************/	
 	/*cout << wally.average(0, 0, 49, 36) << endl;
 	cout << wally.sum(0, 0, 49, 36) - wally.average(0,0,49,36) << endl;*/
 	///*cout << clutteredScene.average(0, 0, 49, 36) << endl;
