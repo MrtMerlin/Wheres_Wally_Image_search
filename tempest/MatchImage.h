@@ -143,6 +143,14 @@ void MatchImage<T>::sumDiff(Matrix<T>&sMat)
 	cout << fixed << setprecision(0) << "Best Match: " << bMatch << endl;
 	cout << "Best Row: " << bMatchRow << endl;
 	cout << "Best Col: " << bMatchCol << endl;
+
+	for (bMatchRow; bMatchRow < this->getNumRows(); bMatchRow++)
+	{
+		for (bMatchCol; bMatchCol < this->getNumCols(); bMatchCol++)
+		{
+			MatchImage::fillMatrix(255);
+		}
+	}
 }
 
 template <class T>

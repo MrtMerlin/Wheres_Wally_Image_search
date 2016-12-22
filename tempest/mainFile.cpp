@@ -59,7 +59,10 @@ int main()
 		
 		if (userInput == 3)
 		{
-			// do nothing for now.
+			int row = 0, 
+				col = 0;
+			wally.sumDiff(clutteredScene);
+			clutteredScene.saveImage("Test.pgm", wally.getItem(row, col));
 		}
 
 		if (userInput == 4)
