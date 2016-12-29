@@ -23,12 +23,10 @@ int main()
 {
 	HANDLE text = GetStdHandle(STD_OUTPUT_HANDLE);
 	SetConsoleTextAttribute(text, FOREGROUND_GREEN);
-	MatchImage<double>wally("..\\..\\tempest\\Wally_grey.txt", 49, 36);
-	LargeImage<double>clutteredScene("..\\..\\tempest\\Cluttered_scene.txt", 768, 1024);
 	
 	int userInput = 0;
 
-		cout << "***************************************************************************" << endl;
+	cout << "***************************************************************************" << endl;
 	cout << "***************************** WHERES WALLY ********************************" << endl;
 	cout << "************************** Author: Martin Lewis ***************************" << endl;
 	cout << "************************ Student Number: 014096 ***************************" << endl;
@@ -46,6 +44,8 @@ int main()
 
 		SetConsoleTextAttribute(text, FOREGROUND_RED);
 
+		MatchImage<double>wally("..\\..\\tempest\\Wally_grey.txt", 49, 36);
+		LargeImage<double>clutteredScene("..\\..\\tempest\\Cluttered_scene.txt", 768, 1024);
 
 		if (userInput == 1)
 		{
@@ -59,10 +59,8 @@ int main()
 		
 		if (userInput == 3)
 		{
-			int row = 0, 
-				col = 0;
-			wally.sumDiff(clutteredScene);
-			clutteredScene.saveImage("Test.pgm", wally.getItem(row, col));
+
+			
 		}
 
 		if (userInput == 4)
