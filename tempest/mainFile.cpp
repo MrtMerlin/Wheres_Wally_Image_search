@@ -50,6 +50,8 @@ int main()
 		if (userInput == 1)
 		{
 			wally.sumDiff(clutteredScene);
+			clutteredScene.fillMatrix(wally.bMatchRow, wally.bMatchCol);
+			clutteredScene.saveImage("Test.pgm", 255);
 		}
 
 		if (userInput == 2)
@@ -59,8 +61,7 @@ int main()
 		
 		if (userInput == 3)
 		{
-
-			
+		
 		}
 
 		if (userInput == 4)

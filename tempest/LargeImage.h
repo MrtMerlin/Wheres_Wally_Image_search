@@ -31,16 +31,7 @@ class LargeImage :public Matrix<T>
 template<class T>
 LargeImage<T>::LargeImage(const char *fileName, int rows, int cols):Matrix<T>(fileName, rows, cols)
 {
-	this->bestMatchRow = 0;
-	this->bestMatchCol = 0;
-	this->matrix_item_count = rows * cols;
 
-
-}
-
-template<class T>
-LargeImage<T>::LargeImage()
-{
 }
 
 template<class T>

@@ -13,9 +13,7 @@ class MatchImage :public Matrix<T> {
 
 	private:
 		double normalised_correlation;
-		int bMatchRow,
-			bMatchCol,
-			matrix_item_count;
+		int matrix_item_count;
 
 		Matrix<T>wally_Mean_Mat;
 		Matrix<T>clutteredScene_Temp_Mat;
@@ -36,14 +34,17 @@ class MatchImage :public Matrix<T> {
 		T clutteredScene_SubMean = 0;
 		T wallyScene_SubMean = 0;
 		T item_Multiplied = 0;
-		T wallyCalc;
 		T clutteredCalc;
 		T total;
 		T NC_total;
+		
 
 		
 
 	public:
+		T bMatchRow,
+			bMatchCol;
+
 		//constructors
 		MatchImage(const char *fileName, int rows, int cols);
 
@@ -62,36 +63,21 @@ MatchImage<T>::MatchImage(const char *fileName, int rows, int cols):Matrix<T>(fi
 	this->matrix_item_count = rows * cols;
 	this->wally_Image_Mean = 0;
 
-	wally_multiplied = 0;
-
-
-	//find the mean of all the items in this image do it here as you only need to do it once.
-
-
 	wally_Image_Mean = this->average(0, 0, this->getNumRows(), this->getNumCols());
 	//subtract the mean from all the items in this image this will mean creating a new block of memory or altering your existing data
 	for (int row = 0; row < this->getNumRows(); row++)
 	{
 		for (int col = 0; col < this->getNumCols(); col++)
 		{
-			wally_multiplied += this->getItem(row, col) * this->getItem(row, col);
-
-			for (int row = 0; row < this->getNumRows(); row++)
-			{
-				for (int col = 0; col < this->getNumCols(); col++)
-				{
-					this->wally_Mean_Mat.setItem(row, col, this->getItem(row, col - wally_Image_Mean));
-				}
-			}
+			this->wally_Mean_Mat.setItem(row, col, this->getItem(row, col) - wally_Image_Mean);
 		}
 	}
-
 	//create a block of memory to hold part of the larger picture or a matrix with the same size as wally*/
-	for (int row = 0; row < this->getNumRows(); ++row)
+	for (int row = 0; row < 49/*this->getNumRows()*/; ++row)
 	{
-		for (int col = 0; col < this->getNumCols(); ++col)
+		for (int col = 0; col < 36/*this->getNumCols()*/; ++col)
 		{
-			this->clutteredScene_Temp_Mat.setItem(row, col, this->getItem(row, col));
+			this->clutteredScene_Temp_Mat.setItem(row, col, row * col/*this->getItem(row, col)*/);
 		}
 	}
 }
@@ -159,6 +145,8 @@ void MatchImage<T>::sumDiff(Matrix<T>&sMat)
 	cout << fixed << setprecision(0) << "Best Match: " << bMatch << endl;
 	cout << "Best Row: " << bMatchRow << endl;
 	cout << "Best Col: " << bMatchCol << endl;
+
+	
 }
 
 template <class T>
@@ -178,26 +166,39 @@ void MatchImage<T>::calculate_normalised_correlation(Matrix<T>&sMat)
 		cout << ";)";
 		for (int outerCol = 0; outerCol < sMat.getNumCols() - this->getNumCols(); outerCol++)
 		{
+			// copy data from large
 			for (int row = 0; row < this->getNumRows(); row++)
 			{
 				for (int col = 0; col < this->getNumCols(); col++)
 				{
-					wally_Image_Mean = this->average(0, 0, this->getNumRows(), this->getNumCols());
-					this->wally_Mean_Mat.setItem(row, col, sMat.getItem(row, col) - wally_Image_Mean);
-					item_Multiplied += this->getItem(row, col) * sMat.getItem(row, col);
-					wallyCalc += this->getItem(row, col) * this->getItem(row, col);
-					clutteredCalc += sMat.getItem(row, col) * sMat.getItem(row, col);
-					total = sqrt(wallyCalc * clutteredCalc);
+					this->clutteredScene_Temp_Mat.setItem(row, col, sMat.getItem(outerRow + row, outerCol + col));
+				}
+			}
+
+			for (int row = 0; row < this->getNumRows(); row++)
+			{
+				for (int col = 0; col < this->getNumCols(); col++)
+				{
+					clutteredScene_average = this->clutteredScene_Temp_Mat.average(outerRow + row, outerCol + col, this->clutteredScene_Temp_Mat.getNumRows(), this->clutteredScene_Temp_Mat.getNumCols());
+					this->clutteredScene_Temp_Mat.setItem(row, col, this->clutteredScene_Temp_Mat.getItem(row, col) - clutteredScene_average);
+
+					wally_multiplied += this->getItem(row, col) * this->getItem(row, col);
+					item_Multiplied += this->wally_Mean_Mat.getItem(row, col) * clutteredScene_Temp_Mat.getItem(row, col);
+										
+					clutteredCalc += this->clutteredScene_Temp_Mat.getItem(row, col) * this->clutteredScene_Temp_Mat.getItem(row, col);
+
+					total = sqrt(wally_multiplied * clutteredCalc);
 					NC_total = item_Multiplied / total;
 
 					/*clutteredScene_sum += this->getItem(row, col), sMat.getItem(outerRow + row, outerCol + col);
-					T itemCount = row * col;
+					T itemCount = row * col;	
 					clutteredScene_average = clutteredScene_sum / (T)itemCount;
 					wallyScene_SubMean = this->getItem(row, col) - clutteredScene_average;
 					clutteredScene_SubMean = sMat.getItem(outerRow + row, outerCol + col) - clutteredScene_average;
 					item_Multiplied = wallyScene_SubMean * clutteredScene_SubMean;*/
 				}
 			}
+
 			if (NC_total < bMatch)
 			{
 				bMatchRow = outerRow;

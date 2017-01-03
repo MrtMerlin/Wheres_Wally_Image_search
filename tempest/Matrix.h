@@ -48,7 +48,7 @@ public: // public
 
 	void setItem(int row, int col, T value);
 	// signiture for fillMatrix
-	void fillMatrix(T value);
+	void fillMatrix(int bestMatchRow, int bestMatchCol);
 
 
 	// Display
@@ -334,19 +334,19 @@ void Matrix<T>::setItem(int row, int col, T value)
 
 //	Fill the matrix with a single value
 template <class T>
-void Matrix<T>::fillMatrix(T value) // matrix constructor with parameters being used within the method
+void Matrix<T>::fillMatrix(int bestMatchRow, int bestMatchCol) // matrix constructor with parameters being used within the method
 {
 	// if statement this-> indicates variable ptrMatrix is part of this class. if ptrMatrix not = to nullptr step into if statement.
 	if (this->ptrMatrix != nullptr)
 	{
 		// for statement, for each item within row 
-		for (int row = 0; row < numRows; ++row)
+		for (int row = bestMatchRow; row < bestMatchRow + 49; ++row)
 		{
 			// for statement, for each item within column
-			for (int col = 0; col < numCols; ++col)
+			for (int col = bestMatchCol; col < bestMatchCol + 36; ++col)
 			{
 				// fill each space within ptrMatrix with value.
-				ptrMatrix[row * this->numCols + col] = value;
+				this->setItem(row, col, 0);
 			}
 		}
 	}
